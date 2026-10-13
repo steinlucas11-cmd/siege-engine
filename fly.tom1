@@ -1,15 +1,22 @@
-app = "siege-engine"
+# fly.toml
+app = "sua-app"
 primary_region = "gru"
 
-[http_service]
-  internal_port = 8080
-  force_https = true
-  auto_stop_machines = "stop"
-  auto_start_machines = true
-  min_machines_running = 0
-  processes = ["app"]
+[machines]
+  min_machines_running = 1
+  max_machines_running = 1
 
-[[vm]]
-  cpu_kind = "shared"
-  cpus = 1
-  memory_mb = 512
+[[services]]
+  internal_port = 8080
+  protocol = "tcp"
+
+    [[services.http_checks]]
+      interval = "10s"
+      timeout = "2s"
+      method = "GET"
+      path = "/health"
+      headers = { "Host" = "sua-app.fly.dev" }
+
+[[machine]]
+  image = "seu-image:tag"
+  cmd = ["/bin/sh", "-c", "seu-comando-inicial"]
