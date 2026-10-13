@@ -1,5 +1,5 @@
 app = "siege-engine"
-primary_region = "iad"
+primary_region = "gru"
 
 [http_service]
   internal_port = 8080
