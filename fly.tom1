@@ -1,22 +1,14 @@
 # fly.toml
-app = "sua-app"
-primary_region = "gru"
+app = "siege-engine-master"
+primary_region = "gru" # Choose a region close to you (e.g., Sao Paulo)
 
-[machines]
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false # CRITICAL: Prevents auto-stop
+  auto_start_machines = true
   min_machines_running = 1
   max_machines_running = 1
 
-[[services]]
-  internal_port = 8080
-  protocol = "tcp"
-
-    [[services.http_checks]]
-      interval = "10s"
-      timeout = "2s"
-      method = "GET"
-      path = "/health"
-      headers = { "Host" = "sua-app.fly.dev" }
-
-[[machine]]
-  image = "seu-image:tag"
-  cmd = ["/bin/sh", "-c", "seu-comando-inicial"]
+[[vm]]
+  size = "shared-c1x2" # 1 vCPU, 2GB RAM (Enough for Python + Flask)
